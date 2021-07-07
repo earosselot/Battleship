@@ -17,11 +17,10 @@ test('Ship Object constructor', () => {
     expect(shipA).toEqual({
         'id': 4,
         'length': 3,
-        'hits': [0, 0, 0],
+        'hits': 0,
         'sunk': false,
         'horizontal': true,
-        'position': -1,
-        'tiles': []
+        'position': -1
     })
 })
 
@@ -35,13 +34,13 @@ test('Ship creation length too large', () => {
 
 test('hit a ship', () => {
     let shipA = new Ship(4)
-    shipA.hit(2)
-    expect(shipA.hits).toEqual([0, 0, 1, 0])
+    shipA.hit()
+    expect(shipA.hits).toEqual(1)
 })
 
 test('ship not sunk', () => {
     let shipNotSunk = new Ship(5)
-    shipNotSunk.hit(1).hit(2).hit(4)
+    shipNotSunk.hit().hit().hit()
     expect(shipNotSunk.isSunk()).toBeFalsy()
 })
 
@@ -75,20 +74,30 @@ test('ship possition assignement 2', () => {
 
 test('tiles on position assignment horizontal', () => {
     let ship = new Ship(3)
-    ship.setPosition(3)
-    expect(ship.tiles).toEqual([3, 4, 5])
+
+    expect(ship.setPosition(3)).toEqual([3, 4, 5])
 })
 
 test('tiles on position assignment vertical', () => {
     let ship = new Ship(4)
     ship.rotate()
-    ship.setPosition(3)
-    expect(ship.tiles).toEqual([3, 13, 23, 33])
+    expect(ship.setPosition(3)).toEqual([3, 13, 23, 33])
 })
 
 
 test('tiles on position assignment horizontal overflow', () => {
     let ship = new Ship(3)
-    ship.setPosition(9)
-    expect(ship.tiles).toEqual([9, 8, 7])
+    expect(ship.setPosition(9)).toEqual([9, 8, 7])
 })
+
+test('tiles on position assignment horizontal overflow', () => {
+    let ship = new Ship(5)
+    expect(ship.setPosition(38)).toEqual([38, 39, 37, 36, 35])
+})
+
+test('tiles on position assignment vertical overflow', () => {
+    let ship = new Ship(4)
+    ship.rotate()
+    expect(ship.setPosition(82)).toEqual([82, 92, 72, 62])
+})
+

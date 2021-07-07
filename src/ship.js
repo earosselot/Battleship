@@ -9,11 +9,10 @@ class Ship {
         }
         this.id = this.setId()
         this.length = _length
-        this.hits = this.makeHitsArray(_length)
+        this.hits = 0
         this.sunk = false
         this.horizontal = true
         this.position = -1
-        this.tiles = []
     }
 
     setId() {
@@ -21,21 +20,13 @@ class Ship {
         return Ship.currentId
     }
 
-    makeHitsArray(length) {
-        let hitsArray = []
-        for (let i = 0; i < length; i++) {
-           hitsArray.push(0)
-        }
-        return hitsArray
-    }
-
-    hit(number) {
-        this.hits[number] = 1
+    hit() {
+        this.hits += 1
         return this
     }
 
     isSunk() {
-        if (this.hits.reduce((a, b) => a + b, 0) === this.length) {
+        if (this.hits === this.length) {
             this.sunk = true
             return this.sunk
         }
@@ -45,30 +36,39 @@ class Ship {
     setPosition(_position) {
         if (_position < 0 || _position > 99) { throw new Error('position not valid') }
         this.position = _position
-        this.setTiles()
-        return this.position
+        let tiles = this.setTiles()
+        return tiles
     }
 
     setTiles() {
-        this.tiles = []
+        let tiles = []
         if (this.horizontal) {
+            const row = Math.floor(this.position / 10)
             let i = 0
+            let j = 1
             while (i < this.length) {
-                this.tiles.push(this.position + i)
+                if (Math.floor((this.position + i) / 10) === row) {
+                    tiles.push(this.position + i)
+                } else {
+                    tiles.push(this.position - j)
+                    j++
+                }
                 i++
             }
         } else {
             let i = 0
+            let j = 1
             while (i < this.length) {
-                this.tiles.push(this.position + (i * 10))
+                if (this.position + (i * 10) < 100) {
+                    tiles.push(this.position + (i * 10))
+                } else {
+                    tiles.push(this.position - (j * 10))
+                    j++
+                }
                 i++
             }
         }
-        return this.tiles
-    }
-
-    getTiles() {
-        return this.tiles
+        return tiles
     }
 
     rotate() {
