@@ -10,8 +10,8 @@ class Gameboard {
 
     addShip(shipLenght) {
         let ship = new Ship(shipLenght)
-        this.ships[ship.id] = ship
-        return this.ships[ship.id]
+        this.ships[ship.getId()] = ship
+        return this.ships[ship.getId()]
     }
 
     placeShip(shipId, position) {
@@ -36,7 +36,9 @@ class Gameboard {
             if (coordinate in this.tilesWithShips) {
                 const shipId = this.tilesWithShips[coordinate]
                 this.ships[shipId].hit()
+                return 'hit'
             }
+            return 'water'
         }
     }
 

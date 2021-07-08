@@ -47,14 +47,15 @@ test('receive Attack on watter', () => {
     gameboard.receiveAttack(35)
     gameboard.receiveAttack(48)
     gameboard.receiveAttack(48)
-    expect(gameboard.tilesShoted).toEqual([35, 48])
+    expect(gameboard.receiveAttack(40)).toMatch('water')
+    expect(gameboard.tilesShoted).toEqual([35, 48, 40])
 })
 
 test('receive attack on ship', () => {
     let gameboard = new Gameboard()
     gameboard.addShip(4) // 8
     gameboard.placeShip(8, 33)
-    gameboard.receiveAttack(35)
+    expect(gameboard.receiveAttack(35)).toMatch('hit')
     gameboard.receiveAttack(35)
     expect(gameboard.ships[8].hits).toBe(1)
     gameboard.receiveAttack(33)

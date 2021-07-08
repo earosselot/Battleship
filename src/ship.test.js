@@ -2,7 +2,7 @@ const Ship = require('./ship');
 
 test('id 0', () => {
     let ship = new Ship(2)
-    expect(ship.id).toBe(0)
+    expect(ship.getId()).toBe(0)
 })
 
 test('id 2', () => {

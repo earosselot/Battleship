@@ -20,6 +20,10 @@ class Ship {
         return Ship.currentId
     }
 
+    getId() {
+        return this.id
+    }
+
     hit() {
         this.hits += 1
         return this
@@ -75,7 +79,6 @@ class Ship {
         this.horizontal = !this.horizontal
         this.setTiles()
     }
-
 
 }
 
