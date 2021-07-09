@@ -60,4 +60,46 @@ test('computer-human attack enemy board', () => {
     comp1.setNextOutgoingAttack()
     comp1.play()
     expect(human1.gameboard.tilesShoted.length).toBe(2)
+    expect(typeof (human1.gameboard.tilesShoted[0])).toMatch('number')
+    expect(typeof (human1.gameboard.tilesShoted[1])).toMatch('number')
+})
+
+test('create all ships', () => {
+    let human1 = new Human('human1')
+    human1.createShips()
+    expect(Object.keys(human1.gameboard.ships).length).toBe(10)
+})
+
+test('create all ships: only 1 ship of length 5', () => {
+    let human1 = new Human('human1')
+    human1.createShips()
+    let countShipsLenght5 = 0
+    for (ship of Object.values(human1.gameboard.ships)) {
+        if (ship.length === 5) {
+            countShipsLenght5 += 1
+        }
+    }
+    expect(countShipsLenght5).toBe(1)
+})
+
+test('create all ships: 3 ship of length 3', () => {
+    let human1 = new Human('human1')
+    human1.createShips()
+    let countShipsLenght3 = 0
+    for (let ship of Object.values(human1.gameboard.ships)) {
+        if (ship.length === 3) {
+            countShipsLenght3 += 1
+        }
+    }
+    expect(countShipsLenght3).toBe(3)
+})
+
+test('computer place all ships randomly', () => {
+    let comp1 = new Computer('comp1')
+    comp1.createShips()
+    comp1.placeShips()
+    for (let tile of Object.keys(comp1.gameboard.tilesWithShips)) {
+        expect(Object.keys(comp1.gameboard.tilesWithShips).filter(x => x === tile).length).toBe(1)
+    }
+    console.log(comp1.gameboard.tilesWithShips)
 })

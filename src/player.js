@@ -8,6 +8,18 @@ class Player {
         this.enemy = null
     }
 
+    createShips() {
+        for (let i = 2; i < 6; i++) {
+            for (let j = 1; j < 7 - i; j++) {
+                this.gameboard.addShip(i)
+            }
+        }
+    }
+
+    placeShips() {
+        return null
+    }
+
     setNextOutgoingAttack() {
         // setea el proximo ataque, este va a variar en humanos y computadora
         return null
