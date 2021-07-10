@@ -1,0 +1,36 @@
+.tile {
+    background-color: darkgrey;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(10, auto);
+    grid-template-rows: repeat(10, auto);
+    border: solid 1px black;
+    align-content: stretch;
+    width: 40vw;
+    height: 40vw;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+#board-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.tile-water {
+    background-color: aqua!important;
+}
+
+.tile-hit {
+    background-color: darkviolet!important;
+}
+
+.tile-sunk {
+    background-color: crimson!important;
+}
+
+.tile-ship {
+    background-color: green!important;
+}
