@@ -46,20 +46,20 @@ test('receive Attack on watter', () => {
     let gameboard = new Gameboard()
     gameboard.receiveAttack(35)
     gameboard.receiveAttack(48)
-    gameboard.receiveAttack(48)
-    expect(gameboard.receiveAttack(40)).toMatch('water')
-    expect(gameboard.tilesShoted).toEqual([35, 48, 40])
+    expect(gameboard.receiveAttack(48)).toBeFalsy()
+    expect(gameboard.receiveAttack(40)).toBeTruthy()
+    expect(gameboard.tilesShoted.water).toEqual([35, 48, 40])
 })
 
 test('receive attack on ship', () => {
     let gameboard = new Gameboard()
     gameboard.addShip(4) // 8
     gameboard.placeShip(8, 33)
-    expect(gameboard.receiveAttack(35)).toMatch('hit')
-    gameboard.receiveAttack(35)
+    expect(gameboard.receiveAttack(35)).toBeTruthy()
     expect(gameboard.ships[8].hits).toBe(1)
     gameboard.receiveAttack(33)
     expect(gameboard.ships[8].hits).toBe(2)
+    expect(gameboard.tilesShoted.hit).toEqual([35, 33])
 })
 
 test('all ships sank', () => {
@@ -79,4 +79,3 @@ test('all ships sank', () => {
     gameboard.receiveAttack(7)
     expect(gameboard.allShipsSank()).toBeTruthy()
 })
-
