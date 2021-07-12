@@ -1,5 +1,6 @@
 .tile {
     background-color: darkgrey;
+    border: 1px dotted darkslategrey;
 }
 
 .board {
