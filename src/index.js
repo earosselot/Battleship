@@ -1,71 +1,62 @@
 const Game = require('./game')
+const dom = require('./domManipulation')
 
-const board1 = document.getElementById('board1');
-const board2 = document.getElementById('board2');
-createBoard(board1)
-createBoard(board2)
+dom.createBoard('P1Board')
+dom.createBoard('P1enemyBoard')
 
-function createBoard(boardContainer) {
-    const boardId = boardContainer.id
-    for (let i = 0; i < 100; i++) {
-        let tile = document.createElement('div')
-        tile.setAttribute('id', `${boardId}-${i}`)
-        tile.classList.add('tile')
-        boardContainer.appendChild(tile)
-    }
+const P1enemyBoard = document.getElementById('P1enemyBoard').childNodes
+
+P1enemyBoard.forEach(tile => {
+    tile.addEventListener('click', attackTile)
+})
+
+function attackTile(e) {
+    let tileId = e.path[0].id.split('-')[1]
+    game.player1.setNextOutgoingAttack(tileId)
+    gameLoop()
+    this.removeEventListener('click', attackTile)
 }
 
-const game = new Game('computer', 'cpu1', 'computer', 'cpu2')
+const game = new Game('human', 'human1', 'computer', 'cpu2')
 
 game.player1.createShips()
 game.player1.placeShips()
 game.player2.createShips()
 game.player2.placeShips()
 
-while (true) {
-    game.player1.setNextOutgoingAttack()
+function gameLoop() {
     game.player1.play()
-    if (game.player2.gameboard.allShipsSank()) {
-        console.log('player1 win')
-        break
-    }
     game.player2.setNextOutgoingAttack()
     game.player2.play()
-    if (game.player1.gameboard.allShipsSank()) {
+    dom.renderPlayerBoard(game.player1.gameboard, 'P1Board')
+    dom.renderEnemyBoard(game.player1.enemy.gameboard, 'P1enemyBoard')
+    if (game.player1.gameboard.allShipsSank() && game.player2.gameboard.allShipsSank()) {
+        console.log('tie')
+    } else if (game.player2.gameboard.allShipsSank()) {
+        console.log('player1 win')
+    } else if (game.player1.gameboard.allShipsSank()) {
         console.log('player2 win')
-        break
     }
 }
 
-function renderPlayerBoard(player, DOMBoard) {
-    showShips(player.gameboard, DOMBoard)
-    showShotedWaterTiles(player.gameboard, DOMBoard)
-    showShotedHitTiles(player.gameboard, DOMBoard)
-}
+// Game Loop for 2 computers
+// while (true) {
+//     game.player1.setNextOutgoingAttack()
+//     game.player1.play()
+//     game.player2.setNextOutgoingAttack()
+//     game.player2.play()
+//     dom.renderPlayerBoard(game.player1.gameboard, 'P1Board')
+//     dom.renderPlayerBoard(game.player1.enemy.gameboard, 'P1enemyBoard')
+//     if (game.player1.gameboard.allShipsSank() && game.player2.gameboard.allShipsSank()) {
+//         console.log('tie')
+//         break
+//     } else if (game.player2.gameboard.allShipsSank()) {
+//         console.log('player1 win')
+//         break
+//     } else if (game.player1.gameboard.allShipsSank()) {
+//         console.log('player2 win')
+//         break
+//     }
+// }
 
-function showShips(playerGameboard, DOMBoard) {
-    const boardId = DOMBoard.id
-    for (tileId of Object.keys(playerGameboard.tilesWithShips)) {
-        let tileWithShip = document.getElementById(`${boardId}-${tileId}`)
-        tileWithShip.classList.add('tile-ship')
-    }
-}
 
-function showShotedWaterTiles(playerGameboard, DOMBoard) {
-    const boardId = DOMBoard.id
-    for (tileId of playerGameboard.tilesShoted.water) {
-        let tileWithShip = document.getElementById(`${boardId}-${tileId}`)
-        tileWithShip.classList.add('tile-water')
-    }
-}
-
-function showShotedHitTiles(playerGameboard, DOMBoard) {
-    const boardId = DOMBoard.id
-    for (tileId of playerGameboard.tilesShoted.hit) {
-        let tileWithShip = document.getElementById(`${boardId}-${tileId}`)
-        tileWithShip.classList.add('tile-hit')
-    }
-}
-
-renderPlayerBoard(game.player2, board2)
-renderPlayerBoard(game.player1, board1)
