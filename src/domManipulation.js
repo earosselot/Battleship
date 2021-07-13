@@ -17,6 +17,7 @@ function renderPlayerBoard(playerGameboard, DOMBoardId) {
 function renderEnemyBoard(enemyGameboard, DOMBoardId) {
     showShotedWaterTiles(enemyGameboard, DOMBoardId)
     showShotedHitTiles(enemyGameboard, DOMBoardId)
+    showSunkShipTiles(enemyGameboard, DOMBoardId)
 }
 
 function showShips(playerGameboard, DOMBoardId) {
@@ -40,6 +41,17 @@ function showShotedHitTiles(playerGameboard, DOMBoardId) {
     }
 }
 
-
+function showSunkShipTiles(playerGameboard, DOMBoardId) {
+    let sunkShips = playerGameboard.sunkShips()
+    for (shipId of sunkShips) {
+        for (tile of Object.keys(playerGameboard.tilesWithShips)) {
+            if (playerGameboard.tilesWithShips[tile] === shipId) {
+                let sunkTile = document.getElementById(`${DOMBoardId}-${tile}`)
+                sunkTile.classList.remove('tile-hit')
+                sunkTile.classList.add('tile-sunk')
+            }
+        }
+    }
+}
 
 module.exports = { createBoard, renderPlayerBoard, renderEnemyBoard }

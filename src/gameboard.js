@@ -51,6 +51,15 @@ class Gameboard {
         return true
     }
 
+    sunkShips() {
+        let sunkShips = []
+        for (const ship of Object.values(this.ships)) {
+            if (ship.isSunk()) {
+                sunkShips.push(ship.id)
+            }
+        }
+        return sunkShips
+    }
 }
 
 module.exports = Gameboard

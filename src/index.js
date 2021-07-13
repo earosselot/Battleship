@@ -1,6 +1,13 @@
 const Game = require('./game')
 const dom = require('./domManipulation')
 
+const game = new Game('human', 'human1', 'computer', 'cpu2')
+
+game.player1.createShips()
+game.player1.placeShips()
+game.player2.createShips()
+game.player2.placeShips()
+
 dom.createBoard('P1Board')
 dom.createBoard('P1enemyBoard')
 
@@ -17,46 +24,11 @@ function attackTile(e) {
     this.removeEventListener('click', attackTile)
 }
 
-const game = new Game('human', 'human1', 'computer', 'cpu2')
-
-game.player1.createShips()
-game.player1.placeShips()
-game.player2.createShips()
-game.player2.placeShips()
-
 function gameLoop() {
-    game.player1.play()
-    game.player2.setNextOutgoingAttack()
-    game.player2.play()
+    game.gameTurn()
     dom.renderPlayerBoard(game.player1.gameboard, 'P1Board')
-    dom.renderEnemyBoard(game.player1.enemy.gameboard, 'P1enemyBoard')
-    if (game.player1.gameboard.allShipsSank() && game.player2.gameboard.allShipsSank()) {
-        console.log('tie')
-    } else if (game.player2.gameboard.allShipsSank()) {
-        console.log('player1 win')
-    } else if (game.player1.gameboard.allShipsSank()) {
-        console.log('player2 win')
+    dom.renderEnemyBoard(game.player2.gameboard, 'P1enemyBoard')
+    if (game.getGameEnded()) {
+        console.log(game.winner)
     }
 }
-
-// Game Loop for 2 computers
-// while (true) {
-//     game.player1.setNextOutgoingAttack()
-//     game.player1.play()
-//     game.player2.setNextOutgoingAttack()
-//     game.player2.play()
-//     dom.renderPlayerBoard(game.player1.gameboard, 'P1Board')
-//     dom.renderPlayerBoard(game.player1.enemy.gameboard, 'P1enemyBoard')
-//     if (game.player1.gameboard.allShipsSank() && game.player2.gameboard.allShipsSank()) {
-//         console.log('tie')
-//         break
-//     } else if (game.player2.gameboard.allShipsSank()) {
-//         console.log('player1 win')
-//         break
-//     } else if (game.player1.gameboard.allShipsSank()) {
-//         console.log('player2 win')
-//         break
-//     }
-// }
-
-
