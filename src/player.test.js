@@ -8,7 +8,10 @@ test('creating Human Player', () => {
         'gameboard': {
             'ships': {},
             'tilesWithShips': {},
-            'tilesShoted': []
+            "tilesShoted": {
+                "hit": [],
+                "water": []
+            },
         },
         'nextOutgoingAttack': null,
         'enemy': null
@@ -21,10 +24,10 @@ test('human-human attack enemy board', () => {
     human1.setEnemy(human2)
     human1.setNextOutgoingAttack(14)
     human1.play()
-    expect(human2.gameboard.tilesShoted).toEqual([14])
+    expect(human2.gameboard.tilesShoted.water).toEqual([14])
     human1.setNextOutgoingAttack(34)
     human1.play()
-    expect(human2.gameboard.tilesShoted).toEqual([14, 34])
+    expect(human2.gameboard.tilesShoted.water).toEqual([14, 34])
 })
 
 
@@ -35,12 +38,12 @@ test('computer-computer attack enemy board', () => {
     comp2.setEnemy(comp1)
     comp1.setNextOutgoingAttack()
     comp1.play()
-    expect(comp2.gameboard.tilesShoted.length).toBe(1)
+    expect(comp2.gameboard.tilesShoted.water.length).toBe(1)
     comp2.setNextOutgoingAttack()
     comp2.play()
     comp2.setNextOutgoingAttack()
     comp2.play()
-    expect(comp1.gameboard.tilesShoted.length).toEqual(2)
+    expect(comp1.gameboard.tilesShoted.water.length).toEqual(2)
 })
 
 test('computer-human attack enemy board', () => {
@@ -54,14 +57,14 @@ test('computer-human attack enemy board', () => {
     human1.play()
     human1.setNextOutgoingAttack(8)
     human1.play()
-    expect(comp1.gameboard.tilesShoted).toEqual([43, 36,8])
+    expect(comp1.gameboard.tilesShoted.water).toEqual([43, 36,8])
     comp1.setNextOutgoingAttack()
     comp1.play()
     comp1.setNextOutgoingAttack()
     comp1.play()
-    expect(human1.gameboard.tilesShoted.length).toBe(2)
-    expect(typeof (human1.gameboard.tilesShoted[0])).toMatch('number')
-    expect(typeof (human1.gameboard.tilesShoted[1])).toMatch('number')
+    expect(human1.gameboard.tilesShoted.water.length).toBe(2)
+    expect(typeof (human1.gameboard.tilesShoted.water[0])).toMatch('number')
+    expect(typeof (human1.gameboard.tilesShoted.water[1])).toMatch('number')
 })
 
 test('create all ships', () => {

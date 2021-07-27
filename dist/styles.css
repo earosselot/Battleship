@@ -1,14 +1,21 @@
 .tile {
     background-color: darkgrey;
-    border: 1px dotted darkslategrey;
+    height: 3.7vw;
+    width: 3.7vw;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    /*border: 1px dotted darkslategrey;*/
 }
 
 .board {
     display: grid;
+    align-content: space-evenly;
+    justify-content: space-evenly;
     grid-template-columns: repeat(10, auto);
     grid-template-rows: repeat(10, auto);
     border: solid 1px black;
-    align-content: stretch;
     width: 40vw;
     height: 40vw;
     margin-bottom: 10px;
@@ -34,4 +41,28 @@
 
 .tile-ship {
     background-color: green!important;
+}
+
+.shoot {
+    background-color: red;
+    width: 2vw;
+    height: 2vw;
+    display: block;
+    border-radius: 1vw;
+}
+
+.ship-top {
+    border-radius: 1.5vw 1.5vw 0vw 0vw;
+}
+
+.ship-bottom {
+    border-radius: 0vw 0vw 1.5vw 1.5vw;
+}
+
+.ship-left {
+    border-radius: 1.5vw 0vw 0vw 1.5vw;
+}
+
+.ship-right {
+    border-radius: 0vw 1.5vw 1.5vw 0vw;
 }

@@ -5,3 +5,5 @@ test('player creation', () => {
     expect(game.player1.enemy).toEqual(game.player2)
     expect(game.player2.enemy).toEqual(game.player1)
 })
+
+// TODO: Hacer tests de esta clase.

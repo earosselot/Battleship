@@ -8,8 +8,8 @@ class Gameboard {
         this.tilesShoted = {'water': [], 'hit': []}
     }
 
-    addShip(shipLenght) {
-        let ship = new Ship(shipLenght)
+    addShip(shipLength) {
+        let ship = new Ship(shipLength)
         this.ships[ship.getId()] = ship
         return this.ships[ship.getId()]
     }

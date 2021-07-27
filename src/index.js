@@ -1,12 +1,14 @@
 const Game = require('./game')
 const dom = require('./domManipulation')
 
-const game = new Game('human', 'human1', 'computer', 'cpu2')
+const game = new Game('human', 'tony', 'computer', 'cpu2')
 
 game.player1.createShips()
 game.player1.placeShips()
 game.player2.createShips()
 game.player2.placeShips()
+
+console.log(game)
 
 dom.createBoard('P1Board')
 dom.createBoard('P1enemyBoard')
@@ -29,6 +31,6 @@ function gameLoop() {
     dom.renderPlayerBoard(game.player1.gameboard, 'P1Board')
     dom.renderEnemyBoard(game.player2.gameboard, 'P1enemyBoard')
     if (game.getGameEnded()) {
-        console.log(game.winner)
+        console.log(game.winner.name)
     }
 }

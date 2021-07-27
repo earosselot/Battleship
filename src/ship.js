@@ -41,6 +41,7 @@ class Ship {
         if (_position < 0 || _position > 99) { throw new Error('position not valid') }
         this.position = _position
         let tiles = this.setTiles()
+        this.position = Math.min(...tiles)
         return tiles
     }
 

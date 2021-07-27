@@ -21,35 +21,91 @@ function renderEnemyBoard(enemyGameboard, DOMBoardId) {
 }
 
 function showShips(playerGameboard, DOMBoardId) {
-    for (tileId of Object.keys(playerGameboard.tilesWithShips)) {
-        let tileWithShip = document.getElementById(`${DOMBoardId}-${tileId}`)
-        tileWithShip.classList.add('tile-ship')
+    // for (tileId of Object.keys(playerGameboard.tilesWithShips)) {
+    //     let tileWithShip = document.getElementById(`${DOMBoardId}-${tileId}`)
+    //     tileWithShip.classList.add('tile-ship')
+    // }
+    for (ship of Object.values(playerGameboard.ships)) {
+        showPlayerShip(ship, DOMBoardId)
+    }
+}
+
+function showPlayerShip(ship, DOMBoardId) {
+    if (ship.horizontal) {
+        for (let shipPositionDelta = 0; shipPositionDelta < ship.length; shipPositionDelta++) {
+            let shipTile = document.getElementById(`${DOMBoardId}-${ship.position + shipPositionDelta}`)
+            if (shipPositionDelta === 0) {
+                shipTile.classList.add('ship-left')
+            } else if (shipPositionDelta === ship.length - 1) {
+                shipTile.classList.add('ship-right')
+            }
+            shipTile.classList.add('tile-ship')
+        }
+    } else {
+        for (let shipPositionDelta = 0; shipPositionDelta < ship.length; shipPositionDelta++) {
+            let shipTile = document.getElementById(`${DOMBoardId}-${ship.position + (10 * shipPositionDelta)}`)
+            if (shipPositionDelta === 0) {
+                shipTile.classList.add('ship-top')
+            } else if (shipPositionDelta === ship.length - 1) {
+                shipTile.classList.add('ship-bottom')
+            }
+            shipTile.classList.add('tile-ship')
+        }
     }
 }
 
 function showShotedWaterTiles(playerGameboard, DOMBoardId) {
     for (tileId of playerGameboard.tilesShoted.water) {
-        let tileWithShip = document.getElementById(`${DOMBoardId}-${tileId}`)
-        tileWithShip.classList.add('tile-water')
+        let tileWater = document.getElementById(`${DOMBoardId}-${tileId}`)
+        tileWater.classList.add('tile-water')
+        addHitMarker(tileWater)
     }
 }
 
 function showShotedHitTiles(playerGameboard, DOMBoardId) {
     for (tileId of playerGameboard.tilesShoted.hit) {
-        let tileWithShip = document.getElementById(`${DOMBoardId}-${tileId}`)
-        tileWithShip.classList.add('tile-hit')
+        let tileHit = document.getElementById(`${DOMBoardId}-${tileId}`)
+        tileHit.classList.add('tile-hit')
+        addHitMarker(tileHit)
     }
+}
+
+function addHitMarker(tile) {
+    const hitMarker = document.createElement('div')
+    hitMarker.classList.add('shoot')
+    tile.innerHTML = ''
+    tile.appendChild(hitMarker)
 }
 
 function showSunkShipTiles(playerGameboard, DOMBoardId) {
     let sunkShips = playerGameboard.sunkShips()
     for (shipId of sunkShips) {
-        for (tile of Object.keys(playerGameboard.tilesWithShips)) {
-            if (playerGameboard.tilesWithShips[tile] === shipId) {
-                let sunkTile = document.getElementById(`${DOMBoardId}-${tile}`)
-                sunkTile.classList.remove('tile-hit')
-                sunkTile.classList.add('tile-sunk')
+        showSunkShip(playerGameboard.ships[shipId], DOMBoardId)
+    }
+}
+
+function showSunkShip(ship, DOMBoardId) {
+    if (ship.horizontal) {
+        for (let shipPositionDelta = 0; shipPositionDelta < ship.length; shipPositionDelta++) {
+            let shipTile = document.getElementById(`${DOMBoardId}-${ship.position + shipPositionDelta}`)
+            if (shipPositionDelta === 0) {
+                shipTile.classList.add('ship-left')
+            } else if (shipPositionDelta === ship.length - 1) {
+                shipTile.classList.add('ship-right')
             }
+            shipTile.classList.remove('tile-hit')
+            shipTile.classList.add('tile-sunk')
+        }
+    } else {
+        for (let shipPositionDelta = 0; shipPositionDelta < ship.length; shipPositionDelta++) {
+            let shipTile = document.getElementById(`${DOMBoardId}-${ship.position + (10 * shipPositionDelta)}`)
+            if (shipPositionDelta === 0) {
+                shipTile.classList.add('ship-top')
+            } else if (shipPositionDelta === ship.length - 1) {
+                shipTile.classList.add('ship-bottom')
+            }
+            shipTile.classList.remove('tile-hit')
+            shipTile.classList.add('tile-sunk')
         }
     }
 }

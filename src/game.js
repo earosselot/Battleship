@@ -38,11 +38,13 @@ class Game {
             this.player1.play()
             this.player2.setNextOutgoingAttack()
             this.player2.play()
+            this.checkEndGame()
         } else if (this.player1 instanceof Computer && this.player2 instanceof Computer) {
             this.player1.setNextOutgoingAttack()
             this.player1.play()
             this.player2.setNextOutgoingAttack()
             this.player2.play()
+            this.checkEndGame()
         } else if (this.player1 instanceof Human && this.player2 instanceof Human) {
             if (this.player1.nextOutgoingAttack) {
                 this.player1.play()
