@@ -1,3 +1,4 @@
+
 function createBoard(DOMboardId) {
     const boardContainer = document.getElementById(DOMboardId);
     for (let i = 0; i < 100; i++) {
@@ -9,9 +10,11 @@ function createBoard(DOMboardId) {
 }
 
 function renderPlayerBoard(playerGameboard, DOMBoardId) {
+    clearBoard(playerGameboard, DOMBoardId)
     showShips(playerGameboard, DOMBoardId)
     showShotedWaterTiles(playerGameboard, DOMBoardId)
     showShotedHitTiles(playerGameboard, DOMBoardId)
+    showSunkShipTiles(playerGameboard, DOMBoardId)
 }
 
 function renderEnemyBoard(enemyGameboard, DOMBoardId) {
@@ -20,12 +23,17 @@ function renderEnemyBoard(enemyGameboard, DOMBoardId) {
     showSunkShipTiles(enemyGameboard, DOMBoardId)
 }
 
+function clearBoard(playerGameboard, DOMBoardId) {
+    let tiles = document.getElementById(DOMBoardId).childNodes
+    tiles.forEach( tile => {
+        tile.classList = ''
+        tile.classList.add('tile')
+    })
+}
+
 function showShips(playerGameboard, DOMBoardId) {
-    // for (tileId of Object.keys(playerGameboard.tilesWithShips)) {
-    //     let tileWithShip = document.getElementById(`${DOMBoardId}-${tileId}`)
-    //     tileWithShip.classList.add('tile-ship')
-    // }
     for (ship of Object.values(playerGameboard.ships)) {
+        console.log(ship)
         showPlayerShip(ship, DOMBoardId)
     }
 }
@@ -40,6 +48,8 @@ function showPlayerShip(ship, DOMBoardId) {
                 shipTile.classList.add('ship-right')
             }
             shipTile.classList.add('tile-ship')
+            shipTile.classList.add('no-drop')
+            shipTile.setAttribute('data-ship-id', ship.getId())
         }
     } else {
         for (let shipPositionDelta = 0; shipPositionDelta < ship.length; shipPositionDelta++) {
@@ -50,6 +60,8 @@ function showPlayerShip(ship, DOMBoardId) {
                 shipTile.classList.add('ship-bottom')
             }
             shipTile.classList.add('tile-ship')
+            shipTile.classList.add('no-drop')
+            shipTile.setAttribute('data-ship-id', ship.getId())
         }
     }
 }
@@ -65,6 +77,7 @@ function showShotedWaterTiles(playerGameboard, DOMBoardId) {
 function showShotedHitTiles(playerGameboard, DOMBoardId) {
     for (tileId of playerGameboard.tilesShoted.hit) {
         let tileHit = document.getElementById(`${DOMBoardId}-${tileId}`)
+        tileHit.classList.remove('tile-ship')
         tileHit.classList.add('tile-hit')
         addHitMarker(tileHit)
     }

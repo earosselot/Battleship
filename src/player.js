@@ -16,27 +16,28 @@ class Player {
         }
     }
 
-    // TODO: Delete placeShips, randomRotation and generatePosition from player and uncomment it in ComputerPlayer when Human player ship placement done
-    placeShips() {
-        for (let ship of Object.values(this.gameboard.ships)) {
-            let validPosition = false
-            while (!validPosition) {
-                let position = this.generatePosition()
-                this.randomRotation(ship.id)
-                validPosition = this.gameboard.placeShip(ship.id, position)
-            }
-        }
-    }
-
-    randomRotation(shipId) {
-        if (Math.random() < 0.5) {
-            this.gameboard.ships[shipId].rotate()
-        }
-    }
-
-    generatePosition() {
-        return Math.floor(Math.random() * 100)
-    }
+    // TODO: Delete placeShips, randomRotation and generatePosition methods from Player and uncomment it in
+    //  ComputerPlayer when Human player ship placement done
+    // placeShips() {
+    //     for (let ship of Object.values(this.gameboard.ships)) {
+    //         let validPosition = false
+    //         while (!validPosition) {
+    //             let position = this.generatePosition()
+    //             this.randomRotation(ship.id)
+    //             validPosition = this.gameboard.placeShip(ship.id, position)
+    //         }
+    //     }
+    // }
+    //
+    // randomRotation(shipId) {
+    //     if (Math.random() < 0.5) {
+    //         this.gameboard.ships[shipId].rotate()
+    //     }
+    // }
+    //
+    // generatePosition() {
+    //     return Math.floor(Math.random() * 100)
+    // }
 
     setNextOutgoingAttack() {
         // setea el proximo ataque, este va a variar en humanos y computadora

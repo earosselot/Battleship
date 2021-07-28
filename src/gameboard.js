@@ -14,6 +14,10 @@ class Gameboard {
         return this.ships[ship.getId()]
     }
 
+    removeShip(shipId) {
+        delete this.ships[shipId]
+    }
+
     placeShip(shipId, position) {
         let tiles = this.ships[shipId].setPosition(position)
         let possibleTiles = {}
@@ -26,6 +30,34 @@ class Gameboard {
         }
         this.tilesWithShips = { ...this.tilesWithShips, ...possibleTiles }
         return true
+    }
+
+    rotateShip(shipId) {
+        let tiles = this.ships[shipId].rotate()
+        // this.cleanOldShipTiles(shipId)
+        let possibleTiles = {}
+        for (const tile of tiles) {
+            if (tile < 99 || this.tilesWithShips[tile] === shipId || (!(tile in this.tilesWithShips))) {
+                possibleTiles[tile] = shipId
+            } else {
+                console.log('false')
+                this.ships[shipId].toggleOrientation()
+                return false
+            }
+        }
+        this.cleanOldShipTiles(shipId)
+        this.tilesWithShips = { ...this.tilesWithShips, ...possibleTiles }
+        console.log(this.tilesWithShips)
+        return true
+    }
+
+    cleanOldShipTiles(shipId) {
+        console.log(this.tilesWithShips)
+        for (let tile of Object.keys(this.tilesWithShips)) {
+            if (this.tilesWithShips[tile] === shipId) {
+                delete this.tilesWithShips[tile]
+            }
+        }
     }
 
     receiveAttack(coordinate) {

@@ -78,7 +78,11 @@ class Ship {
 
     rotate() {
         this.horizontal = !this.horizontal
-        this.setTiles()
+        return this.setTiles()
+    }
+
+    toggleOrientation() {
+        this.horizontal = !this.horizontal
     }
 
 }
