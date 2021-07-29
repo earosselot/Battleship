@@ -69,12 +69,11 @@ test('ship possition assignement', () => {
 test('ship possition assignement 2', () => {
     let ship = new Ship(3)
     ship.setPosition(99)
-    expect(ship.position).toBe(99)
+    expect(ship.position).toBe(97)
 })
 
 test('tiles on position assignment horizontal', () => {
     let ship = new Ship(3)
-
     expect(ship.setPosition(3)).toEqual([3, 4, 5])
 })
 

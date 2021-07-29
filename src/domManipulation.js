@@ -33,7 +33,6 @@ function clearBoard(playerGameboard, DOMBoardId) {
 
 function showShips(playerGameboard, DOMBoardId) {
     for (ship of Object.values(playerGameboard.ships)) {
-        console.log(ship)
         showPlayerShip(ship, DOMBoardId)
     }
 }
@@ -91,7 +90,7 @@ function addHitMarker(tile) {
 }
 
 function showSunkShipTiles(playerGameboard, DOMBoardId) {
-    let sunkShips = playerGameboard.sunkShips()
+    let sunkShips = playerGameboard.getSunkShips()
     for (shipId of sunkShips) {
         showSunkShip(playerGameboard.ships[shipId], DOMBoardId)
     }

@@ -3,7 +3,7 @@ const Player = require('./player')
 class Computer extends Player {
     constructor(_name) {
         super(_name)
-        this.tiles = this.makeArrayOfTiles()
+        this.notAttackedTiles = this.makeArrayOfTiles()
     }
 
     placeShips() {
@@ -28,8 +28,8 @@ class Computer extends Player {
     }
 
     setNextOutgoingAttack() {
-        this.tiles = this.shuffleArray(this.tiles)
-        this.nextOutgoingAttack = this.tiles.pop()
+        this.notAttackedTiles = this.shuffleArray(this.notAttackedTiles)
+        this.nextOutgoingAttack = this.notAttackedTiles.pop()
     }
 
     shuffleArray(array) {

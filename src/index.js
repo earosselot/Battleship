@@ -15,9 +15,7 @@ dom.renderPlayerBoard(game.player1.gameboard, 'P1Board')
 
 const P1enemyBoardTiles = document.getElementById('P1enemyBoard').childNodes
 
-P1enemyBoardTiles.forEach(tile => {
-    tile.addEventListener('click', attackTile)
-})
+P1enemyBoardTiles.forEach(tile => tile.addEventListener('click', attackTile))
 
 function attackTile(e) {
     let tileId = e.path[0].id.split('-')[1]

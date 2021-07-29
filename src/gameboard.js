@@ -6,6 +6,7 @@ class Gameboard {
         this.ships = {}
         this.tilesWithShips = {}
         this.tilesShoted = {'water': [], 'hit': []}
+        this.sunkShips = []
     }
 
     addShip(shipLength) {
@@ -68,6 +69,10 @@ class Gameboard {
             const shipId = this.tilesWithShips[coordinate]
             this.ships[shipId].hit()
             this.tilesShoted.hit.push(coordinate)
+            // TODO: update sunk ships
+            if (this.ships[shipId].isSunk()) {
+                this.sunkShips.push(shipId)
+            }
             return true
         }
         this.tilesShoted.water.push(coordinate)
@@ -83,14 +88,8 @@ class Gameboard {
         return true
     }
 
-    sunkShips() {
-        let sunkShips = []
-        for (const ship of Object.values(this.ships)) {
-            if (ship.isSunk()) {
-                sunkShips.push(ship.id)
-            }
-        }
-        return sunkShips
+    getSunkShips() {
+        return this.sunkShips
     }
 }
 
