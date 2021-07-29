@@ -17,4 +17,3 @@ from [theodinproject.com](https://www.theodinproject.com/paths/full-stack-javasc
 * JavaScript
 * Webpack
 * Jest (for Testing)
-* 
