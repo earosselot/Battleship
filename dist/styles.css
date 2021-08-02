@@ -1,3 +1,10 @@
+#player2-name {
+    display: none;
+}
+.active-game-stage {
+    color: #006600;
+}
+
 h2 {
     text-align: center;
 }

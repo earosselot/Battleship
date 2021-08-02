@@ -2,19 +2,28 @@ const Human = require('./humanPlayer')
 const Computer = require('./computerPlayer')
 
 class Game {
-    constructor(_player1Type, _p1name, _player2Type, _p2name) {
-        this.player1 = this.createPlayer(_player1Type, _p1name)
-        this.player2 = this.createPlayer(_player2Type, _p2name)
-        this.relatePlayers()
+    constructor() {
+        this.player1 = null
+        this.player2 = null
         this.stage = 'preGame'
         this.winner = null
     }
 
-    createPlayer(_playerType, _playerName) {
+    addPlayer1(_playerType, _playerName) {
         if (_playerType === 'human') {
-            return new Human(_playerName)
+            this.player1 = new Human(_playerName)
         } else if (_playerType === 'computer') {
-            return new Computer(_playerName)
+            this.player1 = new Computer(_playerName)
+        } else {
+            throw new Error('type of player not valid. Must be "human" or "computer"')
+        }
+    }
+
+    addPlayer2(_playerType, _playerName) {
+        if (_playerType === 'human') {
+            this.player2 = new Human(_playerName)
+        } else if (_playerType === 'computer') {
+            this.player2 = new Computer(_playerName)
         } else {
             throw new Error('type of player not valid. Must be "human" or "computer"')
         }
