@@ -5,10 +5,6 @@ class Human extends Player {
         super(_name)
     }
 
-    // placeShips() {
-    //     return null
-    // }
-
     setNextOutgoingAttack(coordinate) {
         this.nextOutgoingAttack = coordinate
     }

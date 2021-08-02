@@ -4,9 +4,7 @@ class Gameboard {
 
     constructor() {
         this.ships = {}
-        this.tilesWithShips = {}
-        this.tilesShoted = {'water': [], 'hit': []}
-        this.sunkShips = []
+        this.tilesShooted = {'water': [], 'hit': []}
     }
 
     addShip(shipLength) {
@@ -19,77 +17,71 @@ class Gameboard {
         delete this.ships[shipId]
     }
 
-    placeShip(shipId, position) {
-        let tiles = this.ships[shipId].setPosition(position)
-        let possibleTiles = {}
-        for (const tile of tiles) {
-            if (!(tile in this.tilesWithShips)) {
-                possibleTiles[tile] = shipId
-            } else {
+    getShips() {
+        return this.ships
+    }
+
+    moveShip(shipId, position) {
+        let previousPosition = this.ships[shipId].getTiles()
+        this.ships[shipId].setTiles(position)
+        for (let ship of Object.values(this.ships)) {
+            if (ship.getId() !== shipId && this.shipsIntersects(ship.getId(), shipId)) {
+                this.ships[shipId].setTiles(previousPosition)
                 return false
             }
         }
-        this.tilesWithShips = { ...this.tilesWithShips, ...possibleTiles }
-        return true
+        return  true
+    }
+
+    shipsIntersects(ship1Id, ship2Id) {
+        let ship1Tiles = this.ships[ship1Id].getTiles()
+        let ship2Tiles = this.ships[ship2Id].getTiles()
+        for (let tile1 of ship1Tiles) {
+            for (let tile2 of ship2Tiles) {
+                if (tile1 === tile2) {
+                    return true
+                }
+            }
+        }
+        return false
     }
 
     rotateShip(shipId) {
-        let tiles = this.ships[shipId].rotate()
-        // this.cleanOldShipTiles(shipId)
-        let possibleTiles = {}
-        for (const tile of tiles) {
-            if (tile < 99 || this.tilesWithShips[tile] === shipId || (!(tile in this.tilesWithShips))) {
-                possibleTiles[tile] = shipId
-            } else {
-                console.log('false')
-                this.ships[shipId].toggleOrientation()
-                return false
-            }
+        if (this.ships[shipId].getTiles().length === 0) {
+            throw new Error(`Can't rotate ship outside the board`)
         }
-        this.cleanOldShipTiles(shipId)
-        this.tilesWithShips = { ...this.tilesWithShips, ...possibleTiles }
-        console.log(this.tilesWithShips)
-        return true
-    }
-
-    cleanOldShipTiles(shipId) {
-        console.log(this.tilesWithShips)
-        for (let tile of Object.keys(this.tilesWithShips)) {
-            if (this.tilesWithShips[tile] === shipId) {
-                delete this.tilesWithShips[tile]
-            }
-        }
+        this.ships[shipId].toggleOrientation()
+        let previousPosition = this.ships[shipId].getTiles()
+        return this.moveShip(shipId, previousPosition[0])
     }
 
     receiveAttack(coordinate) {
-        if (this.tilesShoted.water.includes(coordinate) || this.tilesShoted.hit.includes(coordinate)) {
+        if (this.tilesShooted.water.includes(coordinate) || this.tilesShooted.hit.includes(coordinate)) {
             return false
         }
-        if (coordinate in this.tilesWithShips) {
-            const shipId = this.tilesWithShips[coordinate]
-            this.ships[shipId].hit()
-            this.tilesShoted.hit.push(coordinate)
-            // TODO: update sunk ships
-            if (this.ships[shipId].isSunk()) {
-                this.sunkShips.push(shipId)
-            }
-            return true
+        if (this.shipHit(coordinate)) {
+            this.tilesShooted.hit.push(coordinate)
+        } else {
+            this.tilesShooted.water.push(coordinate)
         }
-        this.tilesShoted.water.push(coordinate)
         return true
     }
 
+    shipHit(coordinate){
+        let shipHit = false
+        for (let ship of Object.values(this.ships)) {
+            shipHit = shipHit || ship.hit(coordinate)
+        }
+        return shipHit
+    }
+
     allShipsSank() {
-        for (const ship of Object.values(this.ships)) {
+        for (let ship of Object.values(this.ships)) {
             if (!ship.isSunk()) {
                 return false
             }
         }
         return true
-    }
-
-    getSunkShips() {
-        return this.sunkShips
     }
 }
 

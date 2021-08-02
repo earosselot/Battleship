@@ -37,6 +37,7 @@ function showShips(playerGameboard, DOMBoardId) {
     }
 }
 
+// TODO esto se puede hacer mas simple usando ship.tiles
 function showPlayerShip(ship, DOMBoardId) {
     if (ship.horizontal) {
         for (let shipPositionDelta = 0; shipPositionDelta < ship.length; shipPositionDelta++) {
@@ -69,7 +70,7 @@ function showShotedWaterTiles(playerGameboard, DOMBoardId) {
     for (tileId of playerGameboard.tilesShoted.water) {
         let tileWater = document.getElementById(`${DOMBoardId}-${tileId}`)
         tileWater.classList.add('tile-water')
-        addHitMarker(tileWater)
+        addShootMarker(tileWater)
     }
 }
 
@@ -78,11 +79,11 @@ function showShotedHitTiles(playerGameboard, DOMBoardId) {
         let tileHit = document.getElementById(`${DOMBoardId}-${tileId}`)
         tileHit.classList.remove('tile-ship')
         tileHit.classList.add('tile-hit')
-        addHitMarker(tileHit)
+        addShootMarker(tileHit)
     }
 }
 
-function addHitMarker(tile) {
+function addShootMarker(tile) {
     const hitMarker = document.createElement('div')
     hitMarker.classList.add('shoot')
     tile.innerHTML = ''

@@ -9,10 +9,9 @@ class Ship {
         }
         this.id = this.setId()
         this.length = _length
-        this.hits = 0
-        this.sunk = false
         this.horizontal = true
-        this.position = -1
+        this.tiles = []
+        this.hits = {}
     }
 
     setId() {
@@ -24,38 +23,39 @@ class Ship {
         return this.id
     }
 
-    hit() {
-        this.hits += 1
-        return this
+    getTiles() {
+        return this.tiles
     }
 
-    isSunk() {
-        if (this.hits === this.length) {
-            this.sunk = true
-            return this.sunk
+    setTiles(_position) {
+        if (Number.isInteger(_position)) {
+            if (_position < 0 || _position > 99) {
+                throw new Error('position not valid')
+            }
+            this.tiles = this.chooseTiles(_position)
+            this.generateHitsObject(this.tiles)
+        } else if (Array.isArray(_position)) {
+            if (_position.length === 0 || this.length === _position.length) {
+                this.tiles = _position
+            } else {
+                throw new Error(`The number of tiles you're trying to assign does not match with the ship length`)
+            }
+
         }
-        return this.sunk
+
     }
 
-    setPosition(_position) {
-        if (_position < 0 || _position > 99) { throw new Error('position not valid') }
-        this.position = _position
-        let tiles = this.setTiles()
-        this.position = Math.min(...tiles)
-        return tiles
-    }
-
-    setTiles() {
+    chooseTiles(_position) {
         let tiles = []
         if (this.horizontal) {
-            const row = Math.floor(this.position / 10)
+            const row = Math.floor(_position / 10)
             let i = 0
             let j = 1
             while (i < this.length) {
-                if (Math.floor((this.position + i) / 10) === row) {
-                    tiles.push(this.position + i)
+                if (Math.floor((_position + i) / 10) === row) {
+                    tiles.push(_position + i)
                 } else {
-                    tiles.push(this.position - j)
+                    tiles.push(_position - j)
                     j++
                 }
                 i++
@@ -64,27 +64,50 @@ class Ship {
             let i = 0
             let j = 1
             while (i < this.length) {
-                if (this.position + (i * 10) < 100) {
-                    tiles.push(this.position + (i * 10))
+                if (_position + (i * 10) < 100) {
+                    tiles.push(_position + (i * 10))
                 } else {
-                    tiles.push(this.position - (j * 10))
+                    tiles.push(_position - (j * 10))
                     j++
                 }
                 i++
             }
         }
+        tiles.sort((a, b) => a-b)
         return tiles
     }
 
-    rotate() {
-        this.horizontal = !this.horizontal
-        return this.setTiles()
+    generateHitsObject(tiles) {
+        this.hits = {}
+        tiles.forEach(tile => this.hits[tile] = false)
+    }
+
+    isHorizontal() {
+        return this.horizontal
     }
 
     toggleOrientation() {
         this.horizontal = !this.horizontal
     }
 
+    hit(coordinate) {
+        if (coordinate in this.hits) {
+            this.hits[coordinate] = true
+            return true
+        }
+        return false
+    }
+
+    getHits() {
+        return this.hits
+    }
+
+    isSunk() {
+        for(let hit of Object.values(this.hits)) {
+            if (!hit) { return false; }
+        }
+        return true
+    }
 }
 
 module.exports = Ship

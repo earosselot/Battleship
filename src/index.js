@@ -63,7 +63,7 @@ function dropHandle(e) {
         let position = parseInt(e.target.id.split('-')[1])
         let shipLength = e.dataTransfer.getData('shipLength')
         let ship = game.player1.gameboard.addShip(shipLength)
-        let valid = game.player1.gameboard.placeShip(ship.getId(), position)
+        let valid = game.player1.gameboard.moveShip(ship.getId(), position)
         if (valid) {
             draggingElement.parentNode.removeChild(draggingElement)
 

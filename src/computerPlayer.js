@@ -12,14 +12,14 @@ class Computer extends Player {
             while (!validPosition) {
                 let position = this.generatePosition()
                 this.randomRotation(ship.id)
-                validPosition = this.gameboard.placeShip(ship.id, position)
+                validPosition = this.gameboard.moveShip(ship.id, position)
             }
         }
     }
 
     randomRotation(shipId) {
         if (Math.random() < 0.5) {
-            this.gameboard.ships[shipId].rotate()
+            this.gameboard.ships[shipId].toggleOrientation()
         }
     }
 
