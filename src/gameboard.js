@@ -4,7 +4,7 @@ class Gameboard {
 
     constructor() {
         this.ships = {}
-        this.tilesShooted = {'water': [], 'hit': []}
+        this.shootsRecieved = {'water': [], 'hit': []}
     }
 
     addShip(shipLength) {
@@ -56,13 +56,13 @@ class Gameboard {
     }
 
     receiveAttack(coordinate) {
-        if (this.tilesShooted.water.includes(coordinate) || this.tilesShooted.hit.includes(coordinate)) {
+        if (this.shootsRecieved.water.includes(coordinate) || this.shootsRecieved.hit.includes(coordinate)) {
             return false
         }
         if (this.shipHit(coordinate)) {
-            this.tilesShooted.hit.push(coordinate)
+            this.shootsRecieved.hit.push(coordinate)
         } else {
-            this.tilesShooted.water.push(coordinate)
+            this.shootsRecieved.water.push(coordinate)
         }
         return true
     }

@@ -134,7 +134,7 @@ test('receive Attack on watter', () => {
     gameboard.receiveAttack(48)
     expect(gameboard.receiveAttack(48)).toBeFalsy()
     expect(gameboard.receiveAttack(40)).toBeTruthy()
-    expect(gameboard.tilesShooted.water).toEqual([35, 48, 40])
+    expect(gameboard.shootsRecieved.water).toEqual([35, 48, 40])
 })
 
 test('receive attack on ship', () => {
@@ -145,7 +145,7 @@ test('receive attack on ship', () => {
     expect(gameboard.ships[21].getHits()).toEqual({33: false, 34: false, 35: true, 36: false})
     gameboard.receiveAttack(33)
     expect(gameboard.ships[21].getHits()).toEqual({33: true, 34: false, 35: true, 36: false})
-    expect(gameboard.tilesShooted.hit).toEqual([35, 33])
+    expect(gameboard.shootsRecieved.hit).toEqual([35, 33])
 })
 
 test('all ships sank', () => {

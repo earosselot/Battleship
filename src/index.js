@@ -26,8 +26,11 @@ playerNamesForm.addEventListener('submit', (e) => {
     domBegin.startGame(game, players)
     domBoard.createBoard('P1Board')
     domBoard.createBoard('P1enemyBoard')
-    game.player1.createShips()
+    for (let i = 0; i < 10; i++) {
+        game.player1.gameboard.moveShip(i,i*10)
+    }
     domBoard.renderBoard(game.player1.gameboard, 'P1Board', 'ship-container', 'player')
+    domBoard.renderBoard(game.player2.gameboard, 'P1enemyBoard', 'ship-container2', 'player')
     preGameSettings.style.display = "none"
 })
 
@@ -35,9 +38,19 @@ playerNamesForm.addEventListener('submit', (e) => {
 const button111 = document.getElementById('placing-finished')
 button111.addEventListener('click', () => {
     console.log(game)
+    game.startGame()
+    console.log(game)
+    game.player1.setNextOutgoingAttack(12)
+    game.gameTurn()
+    game.player1.setNextOutgoingAttack(15)
+    game.gameTurn()
+    game.player1.setNextOutgoingAttack(17)
+    game.gameTurn()
+    domBoard.renderBoard(game.player1.gameboard, 'P1Board', 'ship-container', 'player')
+    domBoard.renderBoard(game.player2.gameboard, 'P1enemyBoard', 'ship-container2', 'player')
+    console.log(game)
 })
 
-// domBoard.renderPlayerBoard(game.player1.gameboard, 'P1Board')
 //
 // const P1enemyBoardTiles = document.getElementById('P1enemyBoard').childNodes
 //
@@ -76,6 +89,7 @@ button111.addEventListener('click', () => {
 //     P1BoardTiles.forEach(tile => tile.addEventListener('dragover', dragOnTile, false))
 //     P1BoardTiles.forEach(tile => tile.addEventListener('dragleave', dragOffTile, false))
 //
+//     // TODO: https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/setDragImage agregar.
 //     const outOfBoardShips = document.getElementsByClassName('out-of-board-ship')
 //     for (let ship of outOfBoardShips) {
 //         ship.addEventListener('dragstart', dragStarted, false)
