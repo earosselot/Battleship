@@ -1,7 +1,6 @@
 # Battleship
 
-// add link to ghpages
-[Live on Github Pages]()
+[Live on Github Pages](https://earosselot.github.io/Battleship/)
 
 Project: Battleship
 
