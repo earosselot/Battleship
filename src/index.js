@@ -50,7 +50,8 @@ placingFinishedButton.addEventListener('click', () => {
 })
 
 function attackTile(e) {
-    let tileId = parseInt(e.path[0].id.split('-')[1])
+    let path = e.path || (e.composedPath && e.composedPath())
+    let tileId = parseInt(path[0].id.split('-')[1])
     game.player1.setNextOutgoingAttack(tileId)
     gameLoop()
     this.removeEventListener('click', attackTile)
