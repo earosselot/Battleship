@@ -144,3 +144,8 @@ test('ship set Tiles invalid', () => {
     ship.setTiles(4)
     expect(() => ship.setTiles([6,7,8])).toThrow()
 })
+
+test('not placed ship isnt sunk', () => {
+    let shipSunk = new Ship(3)
+    expect(shipSunk.isSunk()).toBeFalsy()
+})

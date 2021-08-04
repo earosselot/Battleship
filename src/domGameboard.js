@@ -1,6 +1,7 @@
 
 function createBoard(DOMboardId) {
     const boardContainer = document.getElementById(DOMboardId);
+    boardContainer.innerHTML = ''
     for (let i = 0; i < 100; i++) {
         let tile = document.createElement('div')
         tile.setAttribute('id', `${DOMboardId}-${i}`)
@@ -12,6 +13,7 @@ function createBoard(DOMboardId) {
 function renderBoard(gameboard, DOMBoardId, shipContainerId, mode) {
     if (mode === 'player' || mode === 'enemy') {
         clearBoard(DOMBoardId)
+        clearShipContainer(shipContainerId)
         if (mode === 'player') {
             renderAllShips(gameboard, DOMBoardId, shipContainerId)
         }
@@ -29,27 +31,31 @@ function clearBoard(DOMBoardId) {
     })
 }
 
-function renderAllShips(Gameboard, DOMBoardId, ShipContainerId) {
-    for (ship of Object.values(Gameboard.ships)) {
-        renderShip(ship, DOMBoardId, ShipContainerId)
+function clearShipContainer(shipContainerId) {
+    const shipContainer = document.getElementById(shipContainerId)
+    shipContainer.innerHTML = ''
+}
+
+function renderAllShips(gameboard, DOMBoardId, shipContainerId) {
+    for (ship of Object.values(gameboard.getShips())) {
+        renderShip(ship, DOMBoardId, shipContainerId)
     }
 }
 
-function renderShip(ship, DOMBoardId, ShipContainerId) {
+function renderShip(ship, DOMBoardId, shipContainerId) {
     let shipTiles = ship.getTiles()
     if (shipTiles.length === 0) {
-        const shipContainer = document.getElementById(ShipContainerId)
+        let shipContainer = document.getElementById(shipContainerId)
         let outOfBoardShip = createOutOfBoardShip(ship.length)
         outOfBoardShip.draggable = true
-        outOfBoardShip.setAttribute('data-ship-id', ship.getId())
+        outOfBoardShip.setAttribute('data-shipId', ship.getId())
         shipContainer.appendChild(outOfBoardShip)
     } else {
         for (let tile = 0; tile < ship.length; tile++) {
             let domTile = document.getElementById(`${DOMBoardId}-${shipTiles[tile]}`)
             domTile.classList.add('tile-ship')
-            domTile.classList.add('no-drop')
             domTile.draggable = true
-            domTile.setAttribute('data-ship-id', ship.getId())
+            domTile.setAttribute('data-shipId', ship.getId())
             domTile.setAttribute('data-ship-length', ship.length)
             if (tile === 0) {
                 if (ship.horizontal) { domTile.classList.add('ship-left')}
@@ -80,64 +86,46 @@ function createOutOfBoardShip(shipLength) {
 
 function renderShoots(gameboard, DOMBoardId) {
     renderShootedWaterTiles(gameboard, DOMBoardId)
-    // TODO: seguir agregando aca los shoots hit y los hundidos
+    renderShotedHitTiles(gameboard, DOMBoardId)
+    renderSunkShips(gameboard, DOMBoardId)
 }
 
 function renderShootedWaterTiles(playerGameboard, DOMBoardId) {
     for (tileId of playerGameboard.shootsRecieved.water) {
         let tileWater = document.getElementById(`${DOMBoardId}-${tileId}`)
         tileWater.classList.add('tile-water')
-        addShootMarker(tileWater)
+        renderShootMarker(tileWater)
     }
 }
 
-// function showShotedHitTiles(playerGameboard, DOMBoardId) {
-//     for (tileId of playerGameboard.tilesShoted.hit) {
-//         let tileHit = document.getElementById(`${DOMBoardId}-${tileId}`)
-//         tileHit.classList.remove('tile-ship')
-//         tileHit.classList.add('tile-hit')
-//         addShootMarker(tileHit)
-//     }
-// }
-//
-function addShootMarker(tile) {
+function renderShotedHitTiles(gameboard, DOMBoardId) {
+    for (tileId of gameboard.shootsRecieved.hit) {
+        let tileHit = document.getElementById(`${DOMBoardId}-${tileId}`)
+        tileHit.classList.remove('tile-ship')
+        tileHit.classList.add('tile-hit')
+        renderShootMarker(tileHit)
+    }
+}
+
+function renderSunkShips(gameboard, DOMBoardId) {
+    Object.values(gameboard.getShips()).forEach(ship => {
+        if (ship.isSunk()) {
+            renderShip(ship, DOMBoardId, null)
+            ship.getTiles().forEach(tile => {
+                let tileSunk = document.getElementById(`${DOMBoardId}-${tile}`)
+                tileSunk.classList.remove('tile-hit')
+                tileSunk.classList.remove('tile-ship')
+                tileSunk.classList.add('tile-sunk')
+            })
+        }
+    })
+}
+
+function renderShootMarker(tile) {
     const hitMarker = document.createElement('div')
     hitMarker.classList.add('shoot')
     tile.innerHTML = ''
     tile.appendChild(hitMarker)
 }
-//
-// function showSunkShipTiles(playerGameboard, DOMBoardId) {
-//     let sunkShips = playerGameboard.getSunkShips()
-//     for (shipId of sunkShips) {
-//         showSunkShip(playerGameboard.ships[shipId], DOMBoardId)
-//     }
-// }
-//
-// function showSunkShip(ship, DOMBoardId) {
-//     if (ship.horizontal) {
-//         for (let shipPositionDelta = 0; shipPositionDelta < ship.length; shipPositionDelta++) {
-//             let shipTile = document.getElementById(`${DOMBoardId}-${ship.position + shipPositionDelta}`)
-//             if (shipPositionDelta === 0) {
-//                 shipTile.classList.add('ship-left')
-//             } else if (shipPositionDelta === ship.length - 1) {
-//                 shipTile.classList.add('ship-right')
-//             }
-//             shipTile.classList.remove('tile-hit')
-//             shipTile.classList.add('tile-sunk')
-//         }
-//     } else {
-//         for (let shipPositionDelta = 0; shipPositionDelta < ship.length; shipPositionDelta++) {
-//             let shipTile = document.getElementById(`${DOMBoardId}-${ship.position + (10 * shipPositionDelta)}`)
-//             if (shipPositionDelta === 0) {
-//                 shipTile.classList.add('ship-top')
-//             } else if (shipPositionDelta === ship.length - 1) {
-//                 shipTile.classList.add('ship-bottom')
-//             }
-//             shipTile.classList.remove('tile-hit')
-//             shipTile.classList.add('tile-sunk')
-//         }
-//     }
-// }
 
 module.exports = { createBoard, renderBoard }

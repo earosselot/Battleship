@@ -36,10 +36,12 @@ class Gameboard {
     shipsIntersects(ship1Id, ship2Id) {
         let ship1Tiles = this.ships[ship1Id].getTiles()
         let ship2Tiles = this.ships[ship2Id].getTiles()
-        for (let tile1 of ship1Tiles) {
-            for (let tile2 of ship2Tiles) {
-                if (tile1 === tile2) {
-                    return true
+        if (ship1Tiles.length > 0 && ship2Tiles.length > 0) {
+            for (let tile1 of ship1Tiles) {
+                for (let tile2 of ship2Tiles) {
+                    if (tile1 === tile2) {
+                        return true
+                    }
                 }
             }
         }
@@ -52,19 +54,29 @@ class Gameboard {
         }
         this.ships[shipId].toggleOrientation()
         let previousPosition = this.ships[shipId].getTiles()
-        return this.moveShip(shipId, previousPosition[0])
+        let validRotation = this.moveShip(shipId, previousPosition[0])
+        if (validRotation) {
+            return validRotation
+        }
+        this.ships[shipId].toggleOrientation()
+        return validRotation
     }
 
     receiveAttack(coordinate) {
-        if (this.shootsRecieved.water.includes(coordinate) || this.shootsRecieved.hit.includes(coordinate)) {
-            return false
-        }
-        if (this.shipHit(coordinate)) {
-            this.shootsRecieved.hit.push(coordinate)
+        if (Number.isInteger(coordinate)) {
+            if (this.shootsRecieved.water.includes(coordinate) || this.shootsRecieved.hit.includes(coordinate)) {
+                return false
+            }
+            if (this.shipHit(coordinate)) {
+                this.shootsRecieved.hit.push(coordinate)
+            } else {
+                this.shootsRecieved.water.push(coordinate)
+            }
+            return true
         } else {
-            this.shootsRecieved.water.push(coordinate)
+            return null
+            // throw new Error('coordinate must be an integer')
         }
-        return true
     }
 
     shipHit(coordinate){

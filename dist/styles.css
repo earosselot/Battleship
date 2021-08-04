@@ -1,7 +1,7 @@
 #player2-name {
     display: none;
 }
-.active-game-stage {
+.active-stage {
     color: #006600;
 }
 
@@ -98,4 +98,8 @@ h2 {
 
 .over-tile {
     background-color: #575757;
+}
+
+.drag-on {
+    cursor: move;
 }

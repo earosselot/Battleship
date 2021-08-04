@@ -78,33 +78,32 @@ class Game {
     gameTurn() {
         if (this.getStage() === 'inGame') {
             if (this.player1 instanceof Human && this.player2 instanceof Computer) {
-                this.player1.play()
+                this.player1.attack()
                 this.player2.setNextOutgoingAttack()
-                this.player2.play()
+                this.player2.attack()
                 this.checkEndGame()
             } else if (this.player1 instanceof Computer && this.player2 instanceof Human) {
                 this.player1.setNextOutgoingAttack()
-                this.player1.play()
-                this.player2.play()
+                this.player1.attack()
+                this.player2.attack()
                 this.checkEndGame()
             } else if (this.player1 instanceof Computer && this.player2 instanceof Computer) {
                 this.player1.setNextOutgoingAttack()
-                this.player1.play()
+                this.player1.attack()
                 this.player2.setNextOutgoingAttack()
-                this.player2.play()
+                this.player2.attack()
                 this.checkEndGame()
             } else if (this.player1 instanceof Human && this.player2 instanceof Human) {
                 if (this.player1.nextOutgoingAttack) {
-                    this.player1.play()
+                    this.player1.attack()
                 } else if (this.player2.nextOutgoingAttack) {
-                    this.player2.play()
+                    this.player2.attack()
                     this.checkEndGame()
                 }
             }
         } else {
-            throw new Error('cannot play if the game has not started')
+            throw new Error('can not play if the game has not started')
         }
-
     }
 
     checkEndGame() {

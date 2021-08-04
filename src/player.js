@@ -36,7 +36,7 @@ class Player {
         this.enemy = null
     }
 
-    play() {
+    attack() {
         let coordinate = this.getNextOutgoingAttack()
         this.enemy.gameboard.receiveAttack(coordinate)
         this.nextOutgoingAttack = null

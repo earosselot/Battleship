@@ -40,9 +40,7 @@ class Ship {
             } else {
                 throw new Error(`The number of tiles you're trying to assign does not match with the ship length`)
             }
-
         }
-
     }
 
     chooseTiles(_position) {
@@ -103,11 +101,15 @@ class Ship {
     }
 
     isSunk() {
-        for(let hit of Object.values(this.hits)) {
-            if (!hit) { return false; }
+        if (this.getTiles().length > 0) {
+            for(let hit of Object.values(this.hits)) {
+                if (!hit) { return false; }
+            }
+            return true
         }
-        return true
+        return false
     }
+
 }
 
 module.exports = Ship
