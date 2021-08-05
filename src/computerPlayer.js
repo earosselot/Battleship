@@ -27,6 +27,7 @@ class Computer extends Player {
         return Math.floor(Math.random() * 100)
     }
 
+    // TODO: make AI
     setNextOutgoingAttack() {
         this.notAttackedTiles = this.shuffleArray(this.notAttackedTiles)
         this.nextOutgoingAttack = this.notAttackedTiles.pop()
