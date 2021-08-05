@@ -8,88 +8,55 @@
   <script defer src="main.js" ></script>
 </head>
 <body>
-  <h2>Battleship</h2>
-  <div id="pre-game-settings">
-    <button id="1player">1 Player vs Computer</button>
-    <button id="2players">2 Players</button>
-    <form id="player-names">
-      <input id="player1-name" placeholder="player 1 name" required>
-      <input id="player2-name" placeholder="player 2 name">
-      <button id="start-game" type="submit">Start Game</button>
-    </form>
+  <div class="wrapper">
+
+    <div id="header">
+      <div id="page-title">Battleship</div>
+    </div>
+
+    <div id="pre-game-settings">
+      <button id="1player" style="display: none;">1 Player vs Computer</button>
+      <button id="2players" style="display: none;">2 Players</button>
+      <form id="player-names-form">
+        <label for="1player" class="form-label">Enter your name: </label>
+        <input id="player1-name" placeholder="Player 1 name" required>
+        <input id="player2-name" placeholder="Player 2 name" style="display: none;">
+        <button id="start-game" type="submit">Start Game</button>
+      </form>
+    </div>
+
+    <div id="game-container" style="display: none;">
+
+      <div id="game-stage">
+        <div id="stage-1" class="stage"> <span>Placing Ships</span></div>
+        <div id="stage-2" class="stage"> <span>Playing</span></div>
+        <div id="stage-3" class="stage"> <span>Game Ended</span></div>
+      </div>
+
+      <div id="help-text"></div>
+
+
+
+      <div id="board-container">
+        <div class="board" id="P1enemyBoard"></div>
+        <div class="board" id="P1Board"></div>
+        <div id="ship-container"></div>
+      </div>
+
+
+      <div id="ship-container2"></div>
+
+      <div id="game-buttons-container">
+        <button id="placing-finished">Placing Finished</button>
+        <button id="play-again">Play Again</button>
+        <button id="change-name" style="display: none;">Change Name</button>
+      </div>
+
+    </div>
+
+    <div class="footer">
+
+    </div>
   </div>
-
-  <div id="game-stage">
-    <div id="stage-1">Placing Ships</div>
-    <div id="stage-2">Playing</div>
-    <div id="stage-3">Game Ended</div>
-  </div>
-
-  <button id="placing-finished">Placing Finished</button>
-  <button id="play-again">Play Again</button>
-  <button id="change-mode">Change Mode</button>
-
-  <div id="board-container">
-    <div class="board" id="P1Board"></div>
-    <div class="board" id="P1enemyBoard"></div>
-  </div>
-
-  <div id="ship-container">
-<!--    <div class="ship2 out-of-board-ship" draggable="true">-->
-<!--      <div class="tile ship-left"></div>-->
-<!--      <div class="tile ship-right"></div>-->
-<!--    </div>-->
-<!--    <div class="ship2 out-of-board-ship" draggable="true">-->
-<!--      <div class="tile ship-left"></div>-->
-<!--      <div class="tile ship-right"></div>-->
-<!--    </div>-->
-<!--    <div class="ship2 out-of-board-ship" draggable="true">-->
-<!--      <div class="tile ship-left"></div>-->
-<!--      <div class="tile ship-right"></div>-->
-<!--    </div>-->
-<!--    <div class="ship2 out-of-board-ship" draggable="true">-->
-<!--      <div class="tile ship-left"></div>-->
-<!--      <div class="tile ship-right"></div>-->
-<!--    </div>-->
-
-<!--    <div class="ship3 out-of-board-ship" draggable="true">-->
-<!--      <div class="tile ship-left"></div>-->
-<!--      <div class="tile"></div>-->
-<!--      <div class="tile ship-right"></div>-->
-<!--    </div>-->
-<!--    <div class="ship3 out-of-board-ship" draggable="true">-->
-<!--      <div class="tile ship-left"></div>-->
-<!--      <div class="tile"></div>-->
-<!--      <div class="tile ship-right"></div>-->
-<!--    </div>-->
-<!--    <div class="ship3 out-of-board-ship" draggable="true">-->
-<!--      <div class="tile ship-left"></div>-->
-<!--      <div class="tile"></div>-->
-<!--      <div class="tile ship-right"></div>-->
-<!--    </div>-->
-
-<!--    <div class="ship4 out-of-board-ship" draggable="true">-->
-<!--      <div class="tile ship-left"></div>-->
-<!--      <div class="tile"></div>-->
-<!--      <div class="tile"></div>-->
-<!--      <div class="tile ship-right"></div>-->
-<!--    </div>-->
-<!--    <div class="ship4 out-of-board-ship" draggable="true">-->
-<!--      <div class="tile ship-left"></div>-->
-<!--      <div class="tile"></div>-->
-<!--      <div class="tile"></div>-->
-<!--      <div class="tile ship-right"></div>-->
-<!--    </div>-->
-
-<!--    <div class="ship5 out-of-board-ship" draggable="true">-->
-<!--      <div class="tile ship-left"></div>-->
-<!--      <div class="tile"></div>-->
-<!--      <div class="tile"></div>-->
-<!--      <div class="tile"></div>-->
-<!--      <div class="tile ship-right"></div>-->
-<!--    </div>-->
-  </div>
-  <div id="ship-container2"></div>
-
 </body>
 </html>

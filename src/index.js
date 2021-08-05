@@ -1,4 +1,6 @@
 const Game = require('./game')
+const Human = require('./humanPlayer')
+const Computer = require('./computerPlayer')
 const domBoard = require('./domGameboard')
 const domBegin = require('./domGameBegin')
 
@@ -7,14 +9,20 @@ let game = new Game()
 
 const OnePlayerButton = document.getElementById('1player')
 const TwoPlayerButton = document.getElementById('2players')
-const playerNamesForm = document.getElementById('player-names')
+const playerNamesForm = document.getElementById('player-names-form')
 const preGameSettings = document.getElementById('pre-game-settings')
+const gameContainer = document.getElementById('game-container')
+const placingFinishedButton = document.getElementById('placing-finished')
+const playAgainButton = document.getElementById('play-again')
+const helpTextContainer = document.getElementById('help-text')
+const enemyBoard = document.getElementById('P1enemyBoard')
+const shipContainer = document.getElementById('ship-container')
+const boardContainer = document.getElementById('board-container')
 
 OnePlayerButton.addEventListener('click', (e) => {
     e.preventDefault()
     domBegin.setToOnePlayer(players)
 })
-
 TwoPlayerButton.addEventListener('click', (e) => {
     e.preventDefault()
     domBegin.setToTwoPlayers(players)
@@ -25,10 +33,19 @@ function setGame() {
     domBoard.createBoard('P1Board')
     domBoard.createBoard('P1enemyBoard')
     domBoard.renderBoard(game.player1.gameboard, 'P1Board', 'ship-container', 'player')
-    preGameSettings.style.display = "none"
+    enemyBoard.style.display = 'none'
+    shipContainer.style.display = 'flex'
+    preGameSettings.style.display = 'none'
+    gameContainer.style.display = 'block'
+    placingFinishedButton.style.display = 'block'
+    placingFinishedButton.classList.add('disabled')
+    playAgainButton.style.display = 'none'
+    boardContainer.style.flexDirection = 'column'
     allowShipDragging()
     document.getElementById('stage-3').classList.remove('active-stage')
+    helpTextContainer.classList.remove('result')
     document.getElementById('stage-1').classList.add('active-stage')
+    helpTextContainer.innerHTML = '<p>Drag and drop the ships into the board. Click on ships to rotate</p>'
 }
 
 // When submiting this form Ship Placement stage begins
@@ -37,13 +54,19 @@ playerNamesForm.addEventListener('submit', (e) => {
     setGame();
 })
 
-const placingFinishedButton = document.getElementById('placing-finished')
 placingFinishedButton.addEventListener('click', () => {
     if (game.startGame()) {
+        placingFinishedButton.style.display = 'none'
+        playAgainButton.style.display = 'block'
+        playAgainButton.classList.add('disabled')
+        enemyBoard.style.display = 'grid'
+        shipContainer.style.display = 'none'
         const P1enemyBoardTiles = document.getElementById('P1enemyBoard').childNodes
         P1enemyBoardTiles.forEach(tile => tile.addEventListener('click', attackTile))
         document.getElementById('stage-1').classList.remove('active-stage')
         document.getElementById('stage-2').classList.add('active-stage')
+        boardContainer.style.flexDirection = 'row'
+        helpTextContainer.innerHTML = '<p>Click on the enemy board to attack tiles.</p>'
         blockShipDragging()
         blockShipRotations()
     }
@@ -66,14 +89,24 @@ function gameLoop() {
         P1enemyBoardTiles.forEach(tile => {
             tile.removeEventListener('click', attackTile)
         })
-        const playAgainButton = document.getElementById('play-again')
+        playAgainButton.classList.remove('disabled')
         playAgainButton.addEventListener('click', () => {
             game = new Game()
             setGame()
         })
         document.getElementById('stage-2').classList.remove('active-stage')
         document.getElementById('stage-3').classList.add('active-stage')
+        setWinner()
     }
+}
+
+function setWinner() {
+    if (game.getWinner() instanceof Human || game.getWinner() instanceof Computer) {
+        helpTextContainer.innerHTML = `<p>${game.getWinner().name} has sunk all enemy ships and won the war!</p>`
+    } else {
+        helpTextContainer.innerHTML = `<p>Amazing! all the ships have been sunk at the same time!!</p><p>The game is tie!</p>`
+    }
+    helpTextContainer.classList.add('result')
 }
 
 // Drag And Drop Ships
@@ -93,6 +126,7 @@ function allowShipDragging() {
     for (let ship of outOfBoardShips) {
         ship.addEventListener('dragstart', dragStarted, false)
         ship.addEventListener('dragend', dragEnded, false)
+        ship.draggable = true
     }
 
     const shipTiles = document.getElementsByClassName('tile-ship')
@@ -100,6 +134,7 @@ function allowShipDragging() {
         shipTile.addEventListener('dragstart', dragStarted, false)
         shipTile.addEventListener('dragend', dragEnded, false)
         shipTile.classList.add('drag-on')
+        shipTiles.draggable = true
     }
 }
 
@@ -114,8 +149,17 @@ function dropHandle(e) {
     this.classList.remove('over')
     e.target.classList.remove('over-tile')
     domBoard.renderBoard(game.player1.gameboard, 'P1Board', 'ship-container', 'player')
+    allShipsInBoard()
     allowShipDragging()
     allowShipRotations()
+}
+
+function allShipsInBoard() {
+    let notPlacedShips = shipContainer.childNodes
+    if (notPlacedShips.length === 0) {
+        shipContainer.style.display = 'none'
+        placingFinishedButton.classList.remove('disabled')
+    }
 }
 
 function allowShipRotations() {

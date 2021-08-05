@@ -1,33 +1,221 @@
-#player2-name {
-    display: none;
-}
-.active-stage {
-    color: #006600;
+:root {
+    --blue: 61, 64, 91;
+    --blue100: rgba(var(--blue), 1);
+    --blue50: rgba(var(--blue), 0.5);
+    --lightblue: 108, 113, 157;
+    --lightblue100: rgba(var(--lightblue), 1);
+    --tileblue: 194, 196, 214;
+    --tileblue100: rgba(var(--tileblue), 1);
+    --bone: 244, 241, 222;
+    --bone100: rgba(var(--bone), 1);
+    --bone75: rgba(var(--bone), 0.75);
+    --orange: 224, 122, 95;
+    --orange100: rgba(var(--orange), 1);
+    --orange75: rgba(var(--orange), 0.75);
+    --orange50: rgba(var(--orange), 0.5);
+    --orange25: rgba(var(--orange), 0.25);
+    --darkorange: 201, 76, 40;
+    --darkorange100: rgba(var(--darkorange), 1);
+    --green: rgba(129, 178, 154, 1);
+    --yellow: 242, 204, 143;
+    --yellow100: rgba(var(--yellow), 1);
+    --yellow75: rgba(var(--yellow), 0.75);
+    --yellow50: rgba(var(--yellow), 0.5);
+    --yellow25: rgba(var(--yellow), 0.25);
+    --none: rgba(0, 0, 0, 0);
 }
 
-h2 {
+body { background-color: var(--blue100); }
+
+.wrapper, html, body {
+    height: 100%;
+    margin: 0;
+}
+
+#header {
+    background-color: var(--bone100);
+    text-align: center;
+    color: var(--blue100);
+    font-size: xxx-large;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#pre-game-settings {
+    display: flex;
+    height: 100%;
+    align-content: center;
+    justify-content: center;
+}
+
+#player-names-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 2px;
+    border-color: var(--bone100);
+    font-size: 16px;
+    font-stretch: 100%;
+}
+
+.form-label {
+    text-align: center;
+    color: var(--yellow100);
+    font-size: x-large;
+}
+
+input {
+    background-color: var(--bone100);
+    border-radius: 10px;
+    border-width: 0px;
+    border-color: var(--orange100);
+    text-align: center;
+    height: 38px;
+    width: 300px;
+    padding: 2px;
+    margin: 10px;
+}
+
+input:focus {
+    outline-color: var(--none);
+    outline-style: none;
+    box-shadow: 0 0 0 0.2rem var(--yellow25);
+}
+
+button {
+    width: 300px;
+    height: 38px;
+    align-self: center;
+    border-radius: 10px;
+    border-width: 0px;
+    background-color: var(--yellow75);
+    color: var(--blue100);
+    font-size: large;
+}
+
+button:hover {
+    background-color: var(--orange100);
+    color: var(--blue100);
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 40%;
+}
+
+#game-stage {
+    margin: 10px;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#game-stage .stage {
+    font-size: large;
+    text-align: center;
+    color: var(--blue100);
+    cursor: default;
+    margin: 0 3px;
+    padding: 10px 10px 10px 30px;
+    min-width: 180px;
+    float: left;
+    position: relative;
+    background-color: var(--yellow75);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    transition: background-color 0.2s ease;
+}
+
+#game-stage .stage:after,
+#game-stage .stage:before {
+    content: " ";
+    position: absolute;
+    top: 0;
+    right: -17px;
+    width: 0;
+    height: 0;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-left: 17px solid var(--yellow75);
+    z-index: 2;
+    transition: border-color 0.5s ease;
+}
+
+#game-stage .stage:before {
+    right: auto;
+    left: 0;
+    border-left: 17px solid var(--blue100);
+    z-index: 0;
+}
+
+#game-stage .stage:first-child:before {
+    border:none
+}
+
+#game-stage .stage:first-child {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+#game-stage .stage:last-child:after {
+    border:none
+}
+
+#game-stage .stage:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+#game-stage .stage span {
+    position: relative;
+}
+
+#game-stage .active-stage {
+    font-weight: bold;
+    color: var(--blue100);
+    background-color: var(--orange100);
+
+}
+
+#game-stage .active-stage:after {
+    border-left: 17px solid var(--orange100);
+}
+
+#help-text {
+    font-size: large;
+    color: var(--bone100);
     text-align: center;
 }
 
-.tile {
-    background-color: darkgrey;
-    height: 3.7vw;
-    width: 3.7vw;
+.result {
+    font-size: x-large;
+    font-weight: bold;
+}
+
+#board-container {
     display: flex;
-    align-content: center;
-    justify-content: center;
+    flex-wrap: wrap;
+    flex-direction: column;
     align-items: center;
+    justify-content: space-around;
 }
 
 .board {
     display: grid;
     align-content: space-evenly;
     justify-content: space-evenly;
-    grid-template-columns: repeat(10, auto);
-    grid-template-rows: repeat(10, auto);
-    border: solid 1px black;
-    width: 40vw;
-    height: 40vw;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    gap: 1px 1px;
+    border: solid 1px var(--tileblue100);
+    padding: 2px;
+    width: 370px;
+    height: 370px;
     margin-bottom: 10px;
     margin-top: 10px;
     transition:all 0.4s;
@@ -37,9 +225,10 @@ h2 {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    border: solid 1px black;
-    width: 40vw;
-    margin-left: 4.5vw;
+    border: solid 1px var(--tileblue100);
+    padding: 2px;
+    width: 370px;
+    gap: 5px;
 }
 
 .out-of-board-ship {
@@ -47,31 +236,39 @@ h2 {
     cursor: move;
 }
 
-#board-container {
+.out-of-board-ship .tile {
+    height: 36px;
+    width: 36px;
+}
+
+.tile {
+    background-color: var(--tileblue100);
     display: flex;
-    justify-content: space-around;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
 }
 
 .tile-water {
-    background-color: aqua!important;
+    background-color: var(--lightblue100)!important;
 }
 
 .tile-hit {
-    background-color: darkviolet!important;
+    background-color: var(--orange100)!important;
 }
 
 .tile-sunk {
-    background-color: crimson!important;
+    background-color: var(--darkorange100)!important;
 }
 
 .tile-ship {
-    background-color: green!important;
+    background-color: var(--yellow100)!important;
 }
 
 .shoot {
-    background-color: red;
-    width: 2vw;
-    height: 2vw;
+    background-color: var(--green);
+    width: 1.5vw;
+    height: 1.5vw;
     display: block;
     border-radius: 1vw;
 }
@@ -93,7 +290,7 @@ h2 {
 }
 
 .over {
-    box-shadow: 0px 0px 10px 3px rgba(0,0,0,0.4);
+    box-shadow: 0px 0px 10px 3px rgba(255, 255, 255, 0.4);
 }
 
 .over-tile {
@@ -102,4 +299,10 @@ h2 {
 
 .drag-on {
     cursor: move;
+}
+
+#game-buttons-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px
 }

@@ -47,14 +47,14 @@ function renderShip(ship, DOMBoardId, shipContainerId) {
     if (shipTiles.length === 0) {
         let shipContainer = document.getElementById(shipContainerId)
         let outOfBoardShip = createOutOfBoardShip(ship.length)
-        outOfBoardShip.draggable = true
+        // outOfBoardShip.draggable = true
         outOfBoardShip.setAttribute('data-shipId', ship.getId())
         shipContainer.appendChild(outOfBoardShip)
     } else {
         for (let tile = 0; tile < ship.length; tile++) {
             let domTile = document.getElementById(`${DOMBoardId}-${shipTiles[tile]}`)
             domTile.classList.add('tile-ship')
-            domTile.draggable = true
+            // domTile.draggable = true
             domTile.setAttribute('data-shipId', ship.getId())
             domTile.setAttribute('data-ship-length', ship.length)
             if (tile === 0) {
