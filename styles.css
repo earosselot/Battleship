@@ -38,6 +38,7 @@ body {
 .wrapper {
     display: flex;
     flex-direction: column;
+    gap: 1em;
 }
 
 #header {
@@ -50,11 +51,11 @@ body {
 }
 
 #game-container {
-
     display: none;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-between;
     flex-grow: 2;
+    gap: 1em;
 }
 
 #footer {
@@ -147,7 +148,7 @@ button:hover {
 }
 
 #game-stage {
-    margin: 10px;
+    /*margin: 10px;*/
     width: 100%;
     height: 40px;
     display: flex;
@@ -245,7 +246,8 @@ button:hover {
     flex-wrap: wrap;
     flex-direction: row;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 1em;
 }
 
 .board {
@@ -259,8 +261,6 @@ button:hover {
     padding: 2px;
     width: 370px;
     height: 370px;
-    margin-bottom: 10px;
-    margin-top: 10px;
     transition:all 0.6s;
 }
 
@@ -348,5 +348,6 @@ button:hover {
 #game-buttons-container {
     display: flex;
     justify-content: center;
-    margin-top: 10px
+    align-items: center;
+    /*margin-top: 10px*/
 }
