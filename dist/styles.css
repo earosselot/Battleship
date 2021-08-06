@@ -35,6 +35,11 @@ body {
     margin: 0;
 }
 
+.wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
 #header {
     background-color: var(--bone100);
     text-align: center;
@@ -44,8 +49,41 @@ body {
     padding-bottom: 10px;
 }
 
+#game-container {
+
+    display: none;
+    flex-direction: column;
+    justify-content: space-evenly;
+    flex-grow: 2;
+}
+
+#footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    font-size: 1rem;
+    /*line-height: 25.6px;*/
+    background-color: var(--bone100);
+}
+
+#footer p {
+    font-size: 1rem;
+    margin-right: 0.5rem;
+}
+
+#footer svg {
+    height: 1.3rem;
+    width: 1.3rem;
+}
+
+#footer svg:hover {
+    opacity: 75%;
+}
+
 #pre-game-settings {
     display: flex;
+    flex-grow: 2;
     height: 100%;
     align-content: center;
     justify-content: center;
@@ -91,14 +129,16 @@ button {
     align-self: center;
     border-radius: 10px;
     border-width: 0px;
-    background-color: var(--yellow75);
+    background-color: var(--yellow100);
     color: var(--blue100);
     font-size: large;
+    transition: background-color 1s, color 1s;
 }
 
 button:hover {
     background-color: var(--orange100);
     color: var(--blue100);
+    cursor: pointer;
 }
 
 .disabled {
@@ -203,7 +243,7 @@ button:hover {
 #board-container {
     display: flex;
     flex-wrap: wrap;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: space-around;
 }
@@ -221,7 +261,7 @@ button:hover {
     height: 370px;
     margin-bottom: 10px;
     margin-top: 10px;
-    transition:all 0.4s;
+    transition:all 0.6s;
 }
 
 #ship-container {
@@ -250,6 +290,7 @@ button:hover {
     align-content: center;
     justify-content: center;
     align-items: center;
+    transition: all 0.5s;
 }
 
 .tile-water {

@@ -17,7 +17,6 @@ const playAgainButton = document.getElementById('play-again')
 const helpTextContainer = document.getElementById('help-text')
 const enemyBoard = document.getElementById('P1enemyBoard')
 const shipContainer = document.getElementById('ship-container')
-const boardContainer = document.getElementById('board-container')
 
 OnePlayerButton.addEventListener('click', (e) => {
     e.preventDefault()
@@ -36,16 +35,16 @@ function setGame() {
     enemyBoard.style.display = 'none'
     shipContainer.style.display = 'flex'
     preGameSettings.style.display = 'none'
-    gameContainer.style.display = 'block'
+    gameContainer.style.display = 'flex'
     placingFinishedButton.style.display = 'block'
     placingFinishedButton.classList.add('disabled')
     playAgainButton.style.display = 'none'
-    boardContainer.style.flexDirection = 'column'
     allowShipDragging()
     document.getElementById('stage-3').classList.remove('active-stage')
     helpTextContainer.classList.remove('result')
     document.getElementById('stage-1').classList.add('active-stage')
-    helpTextContainer.innerHTML = '<p>Drag and drop the ships into the board. Click on ships to rotate</p>'
+    helpTextContainer.innerHTML = "<p>Drag and drop the ships into the board. Click on ships to rotate<br>" +
+        "When you're ready click on Placing Finished to start the game</p>"
 }
 
 // When submiting this form Ship Placement stage begins
@@ -65,7 +64,6 @@ placingFinishedButton.addEventListener('click', () => {
         P1enemyBoardTiles.forEach(tile => tile.addEventListener('click', attackTile))
         document.getElementById('stage-1').classList.remove('active-stage')
         document.getElementById('stage-2').classList.add('active-stage')
-        boardContainer.style.flexDirection = 'row'
         helpTextContainer.innerHTML = '<p>Click on the enemy board to attack tiles.</p>'
         blockShipDragging()
         blockShipRotations()
@@ -139,19 +137,23 @@ function allowShipDragging() {
 }
 
 function dropHandle(e) {
-    // TODO: Prevent from dropping thing that arent ships
     e.preventDefault()
+    if (e.dataTransfer.getData('shipId')) {
+        let position = parseInt(e.target.id.split('-')[1])
+        let shipId = parseInt(e.dataTransfer.getData('shipId'))
+        game.player1.gameboard.moveShip(shipId, position)
 
-    let position = parseInt(e.target.id.split('-')[1])
-    let shipId = parseInt(e.dataTransfer.getData('shipId'))
-    game.player1.gameboard.moveShip(shipId, position)
-
-    this.classList.remove('over')
-    e.target.classList.remove('over-tile')
-    domBoard.renderBoard(game.player1.gameboard, 'P1Board', 'ship-container', 'player')
-    allShipsInBoard()
-    allowShipDragging()
-    allowShipRotations()
+        this.classList.remove('over')
+        e.target.classList.remove('over-tile')
+        domBoard.renderBoard(game.player1.gameboard, 'P1Board', 'ship-container', 'player')
+        allShipsInBoard()
+        allowShipDragging()
+        allowShipRotations()
+    } else {
+        let playerBoard = document.getElementById('P1Board')
+        playerBoard.classList.remove('over')
+        e.target.classList.remove('over-tile')
+    }
 }
 
 function allShipsInBoard() {

@@ -1,5 +1,7 @@
 const Game = require('./game')
 
+// TODO: change all test to the new way to instaciate Game()
+
 test('player relation', () => {
     const game = new Game('human', 'pepe', 'computer', 'robot')
     expect(game.player1.enemy).toEqual(game.player2)
